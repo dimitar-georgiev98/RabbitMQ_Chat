@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ_Chat", "RabbitMQ_Chat\RabbitMQ_Chat.csproj", "{5CD231A1-DD75-4823-A5BE-9AE687FA2BF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ_Chat_Sender", "RabbitMQ_Chat\RabbitMQ_Chat_Sender.csproj", "{5CD231A1-DD75-4823-A5BE-9AE687FA2BF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ_Chat_Consumer", "RabbitMQ_Chat_Consumer\RabbitMQ_Chat_Consumer.csproj", "{F8912EA8-1AC6-4B45-94D6-B6CA2892C7CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ_Chat_Consumer", "RabbitMQ_Chat_Consumer\RabbitMQ_Chat_Consumer.csproj", "{F8912EA8-1AC6-4B45-94D6-B6CA2892C7CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

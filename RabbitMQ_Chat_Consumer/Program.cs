@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RabbitMQ_Chat_Consumer
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
@@ -15,7 +15,7 @@ namespace RabbitMQ_Chat_Consumer
             connectionFactory.UserName = "account";
             connectionFactory.Password = "accountpass";
             connectionFactory.VirtualHost = "test";
-            
+
             IConnection connection = connectionFactory.CreateConnection();
             IModel channel = connection.CreateModel();
             channel.BasicQos(0, 1, false);

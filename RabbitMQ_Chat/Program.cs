@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RabbitMQ_Chat
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
@@ -16,9 +16,9 @@ namespace RabbitMQ_Chat
             ConnectionFactory connectionFactory = new ConnectionFactory();
 
             connectionFactory.Port = 5672;
-            connectionFactory.HostName= "localhost";
-            connectionFactory.UserName= "account";
-            connectionFactory.Password= "accountpass";
+            connectionFactory.HostName = "localhost";
+            connectionFactory.UserName = "account";
+            connectionFactory.Password = "accountpass";
             connectionFactory.VirtualHost = "test";
 
             IConnection connection = connectionFactory.CreateConnection();

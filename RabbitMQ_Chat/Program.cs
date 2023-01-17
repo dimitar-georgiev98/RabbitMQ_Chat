@@ -8,7 +8,42 @@ namespace RabbitMQ_Chat
     {
         static void Main(string[] args)
         {
-            RunQueue();
+            var connect = new ConnectionFactory()
+            { HostName = "localhost", UserName = "account", Password = "accountpass", VirtualHost = "test" };
+            using (var connection = connect.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.ExchangeDeclare(exchange: "direct", type: "direct", true, false);
+                var routingKey = "msg";
+                string consumerResponse = null;
+
+                IBasicProperties basicProperties = channel.CreateBasicProperties();
+                basicProperties.ReplyTo = routingKey;
+
+                Console.Write("Enter your message: ");
+                string message = Console.ReadLine();
+                var body = Encoding.UTF8.GetBytes(message);
+                channel.BasicPublish("direct", "msg", basicProperties, body);
+
+                EventingBasicConsumer basicConsumer = new EventingBasicConsumer(channel);
+                basicConsumer.Received += (sender, BasicDeliveryEventArgs) =>
+                {
+                    IBasicConsumer consumer = (IBasicConsumer)sender;
+                    if (consumer != null)
+                    {
+                        Console.Write("Message received: {0}", consumerResponse);
+                        Console.Write("Enter your message: ");
+                        message = Console.ReadLine();
+                        var body = Encoding.UTF8.GetBytes(message);
+                        channel.BasicPublish("direct", "msg", basicProperties, body);
+                    }
+
+                };
+                channel.BasicConsume("msgq", false, basicConsumer);
+                Console.ReadLine();
+            }
+
+            //RunQueue();
         }
 
         private static void RunQueue()
@@ -52,7 +87,8 @@ namespace RabbitMQ_Chat
                 IBasicProperties props = basicDeliveryEventArgs.BasicProperties;
                 if (props != null && props.CorrelationId == correlationId)
                 {
-                    string response = Encoding.UTF8.GetString(basicDeliveryEventArgs.Body.Span);
+                    var body = basicDeliveryEventArgs.Body.ToArray();
+                    string response = Encoding.UTF8.GetString(body);
                     consumerResponse = response;
                 }
                 channel.BasicAck(basicDeliveryEventArgs.DeliveryTag, false);

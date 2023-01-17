@@ -8,6 +8,28 @@ namespace RabbitMQ_Chat_Consumer
     {
         static void Main(string[] args)
         {
+            var connect = new ConnectionFactory()
+            { HostName = "localhost", UserName = "account", Password = "accountpass", VirtualHost = "test" };
+            using (var connection = connect.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                Console.WriteLine("No messages yet!");
+
+                var consumer = new EventingBasicConsumer(channel);
+                consumer.Received += (sender, BasicDeliverEventArgs) =>
+                {
+                    var body = BasicDeliverEventArgs.Body.ToArray();
+                    var message = Encoding.UTF8.GetString(body);
+                    channel.BasicAck(BasicDeliverEventArgs.DeliveryTag, false);
+                    var routingKey = BasicDeliverEventArgs.RoutingKey;
+                    Console.WriteLine("Message received: {0}", message);
+                    Console.Write("Enter your reply: ");
+                };
+                channel.BasicConsume("msgq", false, consumer);
+                Console.ReadLine();
+            }
+
+            /*
             ConnectionFactory connectionFactory = new ConnectionFactory();
 
             connectionFactory.Port = 5672;
@@ -23,7 +45,8 @@ namespace RabbitMQ_Chat_Consumer
             EventingBasicConsumer eventingBasicConsumer = new EventingBasicConsumer(channel);
             eventingBasicConsumer.Received += (sender, basicDeliveryEventArgs) =>
             {
-                string message = Encoding.UTF8.GetString(basicDeliveryEventArgs.Body.Span);
+                var body = basicDeliveryEventArgs.Body.ToArray();
+                string message = Encoding.UTF8.GetString(body);
                 channel.BasicAck(basicDeliveryEventArgs.DeliveryTag, false);
                 Console.Write("Message: {0} {1}", message, "Enter your message: ");
                 string response = Console.ReadLine();
@@ -33,6 +56,7 @@ namespace RabbitMQ_Chat_Consumer
                 channel.BasicPublish("", basicDeliveryEventArgs.BasicProperties.ReplyTo, basicProperties, responseBytes);
             };
             channel.BasicConsume("queues.msg", false, eventingBasicConsumer);
+            */
         }
     }
 }

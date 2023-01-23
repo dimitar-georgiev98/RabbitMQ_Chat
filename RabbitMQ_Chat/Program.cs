@@ -31,7 +31,7 @@ namespace RabbitMQ_Chat
                     IBasicConsumer consumer = (IBasicConsumer)sender;
                     if (consumer != null)
                     {
-                        Console.Write("Message received: {0}", consumerResponse);
+                        Console.WriteLine("Message received: {0}", consumerResponse);
                         Console.Write("Enter your message: ");
                         message = Console.ReadLine();
                         var body = Encoding.UTF8.GetBytes(message);
